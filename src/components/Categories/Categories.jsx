@@ -1,6 +1,9 @@
 import './Categories.css';
 
 const Categories = () => {
+
+
+    
     return (
         <div id="categories-container">
             <h2 id="categories-heading">Categories</h2>        
