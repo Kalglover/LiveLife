@@ -1,6 +1,6 @@
 import React from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
-import './ThankYou.css';  // Ensure this CSS file is created in your project
+import './ThankYou.css';  
 
 const ThankYou = () => {
   const location = useLocation();
