@@ -6,20 +6,18 @@ import Categories from './components/Categories/Categories';
 import Orders from './components/Orders/Orders';
 import Cart from './components/Cart/Cart';
 import SearchResults from './components/SearchResults/SearchResults';
-import Checkout from './components/Checkout/Checkout';  // Import the Checkout component
+import Checkout from './components/Checkout/Checkout.jsx';  // Import the Checkout component
 import CheckoutForm from './components/CheckoutForm/CheckoutForm.jsx';  // Ensure this path is correct
 import ThankYou from './components/ThankYou/ThankYou';
 import FormComponent from './components/FormComponent/FormComponent.jsx';  // Added FormComponent import
-import Checkout from './components/Checkout/Checkout.jsx';
 import Users from './components/Users/Users.jsx'; // Import the Users component
 import CreditCardForm from './components/CreditCardForm/CreditCardForm.jsx';
 import OrderItems from './components/OrderItems/OrderItems.jsx'; // Adjust the import path according to your file structure
-
+  
 function App() {
   const CartContext = createContext([]);
   const [cartItems, setCartItems] = useState([])
-  
-function App() {
+    return (
     <div>
       <CartContext.Provider value={cartItems}>
         <BrowserRouter>
@@ -35,6 +33,8 @@ function App() {
             <Route path="/thank-you" element={<ThankYou />} />
             <Route path="/OrderItems" element={<OrderItems />} />
             <Route path="/search-results" element={<SearchResults />} />
+            <Route path="/Users" element={<Users />} />  {/* Users component for /Users */}
+          </Routes>
         </BrowserRouter>
       </CartContext.Provider>
     </div>

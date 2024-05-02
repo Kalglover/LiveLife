@@ -1,57 +1,79 @@
 import React, { useState } from 'react';
 
-function Checkout() {
-    const [creditCard, setCreditCard] = useState('');
-    const [expiryDate, setExpiryDate] = useState('');
-    const [cvv, setCvv] = useState('');
+const Checkout = () => {
+  const [cardDetails, setCardDetails] = useState({
+    cardNumber: '',
+    cardHolder: '',
+    expiryDate: '',
+    cvv: '',
+  });
 
-    const handleSubmit = (event) => {
-        event.preventDefault();
-        console.log('Credit Card Info:', { creditCard, expiryDate, cvv });
-        // Here, you would handle form submission, possibly sending data to a server
-    };
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    setCardDetails({
+      ...cardDetails,
+      [name]: value,
+    });
+  };
 
-    return (
-        <div>
-            <h1>Checkout</h1>
-            <form onSubmit={handleSubmit}>
-                <div>
-                    <label>
-                        Credit Card Number:
-                        <input
-                            type="text"
-                            value={creditCard}
-                            onChange={(e) => setCreditCard(e.target.value)}
-                            placeholder="1234 5678 9101 1121"
-                        />
-                    </label>
-                </div>
-                <div>
-                    <label>
-                        Expiry Date:
-                        <input
-                            type="text"
-                            value={expiryDate}
-                            onChange={(e) => setExpiryDate(e.target.value)}
-                            placeholder="MM/YY"
-                        />
-                    </label>
-                </div>
-                <div>
-                    <label>
-                        CVV:
-                        <input
-                            type="text"
-                            value={cvv}
-                            onChange={(e) => setCvv(e.target.value)}
-                            placeholder="123"
-                        />
-                    </label>
-                </div>
-                <button type="submit">Submit Payment</button>
-            </form>
-        </div>
-    );
-}
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    fetch('http://localhost:3001/api/checkout', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(cardDetails),
+    })
+    .then(response => response.json())
+    .then(data => {
+      // Handle the response data
+      console.log(data);
+    })
+    .catch(error => {
+      // Handle any errors
+      console.error('error:', error);
+    });
+  };
+
+  return (
+    <form onSubmit={handleSubmit}>
+      <input
+        name="cardNumber"
+        value={cardDetails.cardNumber}
+        onChange={handleInputChange}
+        type="text"
+        placeholder="Card Number"
+        required
+      />
+      <input
+        name="cardHolder"
+        value={cardDetails.cardHolder}
+        onChange={handleInputChange}
+        type="text"
+        placeholder="Card Holder"
+        required
+      />
+      <input
+        name="expiryDate"
+        value={cardDetails.expiryDate}
+        onChange={handleInputChange}
+        type="text"
+        placeholder="Expiry Date"
+        required
+      />
+      <input
+        name="cvv"
+        value={cardDetails.cvv}
+        onChange={handleInputChange}
+        type="text"
+        placeholder="CVV"
+        required
+      />
+      <button type="submit">Submit</button>
+    </form>
+  );
+};
 
 export default Checkout;
+
