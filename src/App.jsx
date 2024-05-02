@@ -10,7 +10,7 @@ import Checkout from './components/Checkout/Checkout.jsx';  // Import the Checko
 import ThankYou from './components/ThankYou/ThankYou';
 import Users from './components/Users/Users.jsx'; // Import the Users component
 import OrderItems from './components/OrderItems/OrderItems.jsx';
-import { CartProvider } from './components/CartContext.jsx'; // Correct the import path if necessary
+import { CartProvider } from './components/CartContext.jsx'; 
 
 function App() {
     return (
