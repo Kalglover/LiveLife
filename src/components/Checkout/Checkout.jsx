@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import './Checkout.css'; // Ensure you have this CSS file in your project
+import './Checkout.css'; 
 
 const Checkout = () => {
   const [cardDetails, setCardDetails] = useState({
