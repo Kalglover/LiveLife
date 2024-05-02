@@ -1,0 +1,45 @@
+.checkout-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    background-color: white; /* Set the background to white */
+  }
+  
+  .checkout-title {
+    font-size: 24px; /* Large font size for visibility */
+    font-weight: bold; /* Bold font weight */
+    margin-bottom: 20px; /* Space between title and form */
+  }
+  
+  .checkout-form {
+    display: flex;
+    flex-direction: column;
+    width: 300px; /* Adjust the width as needed */
+    gap: 10px;
+    padding: 20px;
+    box-shadow: 0px 0px 10px rgba(0,0,0,0.1); /* Optional: adds shadow to the form */
+    background: white; /* Ensure the form background is white */
+    border-radius: 8px; /* Optional: rounds the corners of the form */
+  }
+  
+  input {
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px; /* Rounds the input fields slightly */
+  }
+  
+  button {
+    padding: 10px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+  }
+  
+  button:hover {
+    background-color: #0056b3;
+  }
+  

@@ -1,26 +1,25 @@
-require('dotenv').config({ path: './.env' });
-console.log('MongoDB URI:', process.env.MONGO_URI);
-
+require('dotenv').config();
 const express = require('express');
 const mysql = require('mysql2');
-const mongoose = require('mongoose'); // Import mongoose only once
 const cors = require('cors');
-const CreditCard = require('./CreditCardModel'); // Adjust path as needed
+const admin = require('firebase-admin');
 
 const app = express();
 
 app.use(cors());
 app.use(express.json());
 
-// MongoDB Connection Setup
-mongoose.connect(process.env.MONGO_URI, {
-  useNewUrlParser: true,
-  useUnifiedTopology: true
-}).then(() => console.log('MongoDB connected successfully'))
-  .catch(err => console.error('MongoDB connection error:', err));
+// Firebase Admin initialization
+var serviceAccount = require('./firebase-adminsdk.json');
+
+admin.initializeApp({
+  credential: admin.credential.cert(serviceAccount)
+});
+
+const db = admin.firestore();
 
 // Establish a connection to the MySQL database
-const db = mysql.createConnection({
+const mysqlDB = mysql.createConnection({
   host: 'localhost',
   user: 'root',
   password: '0245Kalia!',
@@ -28,12 +27,12 @@ const db = mysql.createConnection({
 });
 
 // Connect to the MySQL database
-db.connect(err => {
+mysqlDB.connect(err => {
   if (err) {
     console.error('error connecting to MySQL: ' + err.stack);
     return;
   }
-  console.log('connected to MySQL as id ' + db.threadId);
+  console.log('connected to MySQL as id ' + mysqlDB.threadId);
 });
 
 // Define a route for the root URL
@@ -43,7 +42,7 @@ app.get('/', (req, res) => {
 
 // Define a route to fetch user data
 app.get('/api/users', (req, res) => {
-  db.query('SELECT * FROM Users', (err, results) => {
+  mysqlDB.query('SELECT * FROM Users', (err, results) => {
     if (err) {
       console.error('Error fetching users from MySQL database:', err);
       res.status(500).send('Error fetching users from database');
@@ -55,7 +54,7 @@ app.get('/api/users', (req, res) => {
 
 // Define a route to fetch order items data
 app.get('/api/orderitems', (req, res) => {
-  db.query('SELECT * FROM OrderItems', (err, results) => {
+  mysqlDB.query('SELECT * FROM OrderItems', (err, results) => {
     if (err) {
       console.error('Error fetching order items from MySQL database:', err);
       res.status(500).send('Error fetching order items from database');
@@ -65,22 +64,22 @@ app.get('/api/orderitems', (req, res) => {
   });
 });
 
-// Define a POST route to handle credit card information submission to MongoDB
+// Define a POST route to handle credit card information submission to Firestore
 app.post('/api/creditcards', async (req, res) => {
   try {
     const { cardNumber, cardHolder, expiryDate, cvv } = req.body;
-    const newCard = new CreditCard({
+    const docRef = db.collection('creditcards').doc();
+    await docRef.set({
       card_number: cardNumber,
       card_holder: cardHolder,
       expiry_date: expiryDate,
       cvv: cvv
     });
-
-    await newCard.save();
-    res.status(201).send({ message: 'Credit card saved successfully in MongoDB', data: newCard });
+    console.log('Credit card saved:', docRef.id);  // Confirm save in logs
+    res.status(201).send({ message: 'Credit card saved successfully in Firestore', id: docRef.id });
   } catch (error) {
-    console.error('Error saving credit card data to MongoDB:', error);
-    res.status(500).send('Error submitting credit card data to MongoDB');
+    console.error('Error saving credit card data to Firestore:', error);
+    res.status(500).send('Error submitting credit card data to Firestore');
   }
 });
 
@@ -107,7 +106,6 @@ app.post('/process-payment', (req, res) => {
         }
       ]
     };
-
     res.json(response);
   }, 1000); // Wait 1 second to simulate processing time
 });

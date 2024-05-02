@@ -1,26 +1,23 @@
 import React from 'react';
-import { useLocation } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
+import './ThankYou.css';  // Ensure this CSS file is created in your project
 
-function ThankYou() {
-    const location = useLocation();
-    const { user, orders, items } = location.state || {};
+const ThankYou = () => {
+  const location = useLocation();
+  const navigate = useNavigate();
+  const cardHolder = location.state?.cardHolder || 'Guest';
 
-    return (
-        <div>
-            <h1>Thank You, {user?.UserName}!</h1>
-            <h2>Your Orders:</h2>
-            {orders?.map(order => (
-                <div key={order.OrderID}>
-                    <p>Order ID: {order.OrderID}, Shipping: {order.ShippingAddress}</p>
-                    <ul>
-                        {items?.filter(item => item.OrderID === order.OrderID).map(item => (
-                            <li key={item.ItemID}>{item.ItemName} (Quantity: {item.Quantity})</li>
-                        ))}
-                    </ul>
-                </div>
-            ))}
-        </div>
-    );
-}
+  const handleContinueShopping = () => {
+    navigate('/');  // Navigate back to the homepage
+  };
+
+  return (
+    <div className="thank-you-container">
+      <h1>Thank you for your Purchase</h1>
+      <p>Your payment has been processed, <strong>{cardHolder}</strong>.</p>
+      <button onClick={handleContinueShopping}>Continue Shopping</button>
+    </div>
+  );
+};
 
 export default ThankYou;
