@@ -1,6 +1,6 @@
 // src/components/ProductItem.js
 import React from 'react';
-import { useCart } from './CartContext';  // Adjust the import path as needed
+import { useCart } from './CartContext';  
 
 const ProductItem = ({ product }) => {
     const { addToCart } = useCart();
@@ -10,7 +10,7 @@ const ProductItem = ({ product }) => {
             id: product.id,
             name: product.name,
             price: product.price,
-            image: product.image  // Make sure you have image in your product data
+            image: product.image  
         });
     };
 
