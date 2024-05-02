@@ -1,10 +1,10 @@
 // Import necessary hooks from React
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom'; // import useNavigate instead of useHistory
+import { useNavigate } from 'react-router-dom'; 
 
 const CreditCardForm = () => {
     const [cardDetails, setCardDetails] = useState({
-        userId: '',  // Assuming you manage user ID from context or passed props
+        userId: '',  
         cardNumber: '',
         expiryDate: '',
         cvv: ''
